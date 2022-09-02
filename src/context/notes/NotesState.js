@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import NoteContext from "./NotesContext";
 
 const NoteState = (props) => {
+
   const host = "http://localhost:5000";
   const notesInitial = [];
 
@@ -15,7 +16,7 @@ const NoteState = (props) => {
       headers: {
         "Content-type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwZjY1MmY2NTczNzUwNWNjZDU0N2M2In0sImlhdCI6MTY2MTk1MzMyN30.a3ZE_DTdCVvh6Z0AEYsZQGPRc3Yc3YLnX7Tt8k_qwz4",
+          localStorage.getItem('token'),
       }
     });
     const json = await response.json();
@@ -31,22 +32,13 @@ const NoteState = (props) => {
       headers: {
         "Content-Type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwZjY1MmY2NTczNzUwNWNjZDU0N2M2In0sImlhdCI6MTY2MTk1MzMyN30.a3ZE_DTdCVvh6Z0AEYsZQGPRc3Yc3YLnX7Tt8k_qwz4",
+          localStorage.getItem('token'),
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    const json = response.json();
-    console.log(json);
-
-    const note = {
-
-      "title": title,
-      "description": description,
-      "tag": tag,
-    }
-    // const note =await response.json()
-    console.log(note);
+    const note = await response.json();
     setNotes(notes.concat(note));
+    // console.log(note);
   };
 
   //delete the note
@@ -57,15 +49,16 @@ const NoteState = (props) => {
       headers: {
         "Content-type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwZjY1MmY2NTczNzUwNWNjZDU0N2M2In0sImlhdCI6MTY2MTk1MzMyN30.a3ZE_DTdCVvh6Z0AEYsZQGPRc3Yc3YLnX7Tt8k_qwz4",
+          localStorage.getItem('token'),
       },
     });
-    const json = response.json();
-    console.log(json);
-    console.log("delete note with id" + id);
     const newNote = notes.filter((note) => {
       return note._id !== id;
     });
+    // const json = response.json();
+    // console.log(json);
+    // console.log("delete note with id" + id);
+  
     setNotes(newNote);
   };
 
@@ -77,12 +70,13 @@ const NoteState = (props) => {
       headers: {
         "Content-type": "application/json",
         "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjMwZjY1MmY2NTczNzUwNWNjZDU0N2M2In0sImlhdCI6MTY2MTk1MzMyN30.a3ZE_DTdCVvh6Z0AEYsZQGPRc3Yc3YLnX7Tt8k_qwz4",
+          localStorage.getItem('token'),
       },
       body: JSON.stringify({ title, description, tag }),
     });
-    const json = response.json();
-const newNotes = JSON.parse(JSON.stringify(notes))
+
+    const json = await response.json();
+    const newNotes = JSON.parse(JSON.stringify(notes))
     for (let index = 0; index < notes.length; index++) {
       const element = newNotes[index];
       if (element._id === id) {
